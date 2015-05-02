@@ -11,35 +11,51 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <at.markushi.ui.CircleButton
+        <!--<at.markushi.ui.CircleButton-->
+            <!--android:id="@+id/button0"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="64dip"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginBottom="8dip"-->
+            <!--android:src="@drawable/ic_action_tick"-->
+            <!--app:cb_color="#ffcc1806" />-->
+
+        <!--<at.markushi.ui.CircleButton-->
+            <!--android:id="@+id/button1"-->
+            <!--android:layout_width="64dip"-->
+            <!--android:layout_height="64dip"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginBottom="8dip"-->
+            <!--android:src="@drawable/ic_action_tick"-->
+            <!--app:cb_color="#FFBB33" />-->
+
+        <!--<at.markushi.ui.CircleButton-->
+            <!--android:id="@+id/button2"-->
+            <!--android:layout_width="64dip"-->
+            <!--android:layout_height="64dip"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginBottom="8dip"-->
+            <!--android:src="@drawable/ic_action_tick"-->
+            <!--app:cb_color="#FF4444" />-->
+
+        <Button
             android:id="@+id/button0"
-            android:layout_width="match_parent"
-            android:layout_height="64dip"
-            android:layout_centerHorizontal="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dip"
-            android:src="@drawable/ic_action_tick"
-            app:cb_color="#ffcc1806" />
-
-        <at.markushi.ui.CircleButton
-            android:id="@+id/button1"
-            android:layout_width="64dip"
-            android:layout_height="64dip"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dip"
-            android:src="@drawable/ic_action_tick"
-            app:cb_color="#FFBB33" />
-
-        <at.markushi.ui.CircleButton
-            android:id="@+id/button2"
-            android:layout_width="64dip"
-            android:layout_height="64dip"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dip"
-            android:src="@drawable/ic_action_tick"
-            app:cb_color="#FF4444" />
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-4dp"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginRight="-5dp"
+            android:background="#d72027"
+            android:hint=" "
+            android:minHeight="52dp"
+            android:text="Send INSTANT Alert"
+            android:textColor="#ffff" />
 
     </LinearLayout>
 </FrameLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true" >
+
+    <Button
+        android:id="@+id/alert_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-4dp"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginRight="-5dp"
+        android:background="#d72027"
+        android:hint=" "
+        android:minHeight="52dp"
+        android:text="Send INSTANT Alert"
+        android:textColor="#ffff" />
+
+    <ListView
+        android:id="@+id/myList"
+        android:divider="@android:color/transparent"
+         android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/alert_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/alert_button"
+        android:layout_below="@+id/profileInfor"
+        android:orientation="vertical"
+        android:dividerHeight="10dp"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="1dip"  >
+    </ListView>
+
+    <TextView
+        android:id="@+id/profileInfor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="Welcome, "
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+ 
+</RelativeLayout>
