@@ -1,21 +1,18 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
 
-    <color name="com_parse_ui_parse_login_button">#40CCCCCC</color>
-    <color name="com_parse_ui_parse_login_button_push">#30CCCCCC</color>
-    <color name="com_parse_ui_parse_login_button_focus">#35CCCCCC</color>
-    <color name="com_parse_ui_parse_login_help_button_label">#E0E0E0</color>
-    <color name="com_parse_ui_parse_login_help_button_label_push">#AAAAAA</color>
-    <color name="com_parse_ui_parse_login_help_button_label_focus">#CCCCCC</color>
-    <color name="com_parse_ui_parse_login_text_hint">#AAAAAA</color>
-    <color name="com_parse_ui_parse_login_display_text">@android:color/white</color>
-    <color name="com_parse_ui_facebook_login_button">#3B5998</color>
-    <color name="com_parse_ui_facebook_login_button_push">#2E4677</color>
-    <color name="com_parse_ui_facebook_login_button_focus">#304F8B</color>
-    <color name="com_parse_ui_twitter_login_button">#2DAAE2</color>
-    <color name="com_parse_ui_twitter_login_button_push">#2588B5</color>
-    <color name="com_parse_ui_twitter_login_button_focus">#2788BE</color>
-    <color name="primary">#ffff422b</color>
-    <color name="primary_600">#ffccb723</color>
-    <color name="white">#FFF</color>
+    <color name="bg_login">#26ae90</color>
+    <color name="bg_register">#2e3237</color>
+    <color name="bg_main">#428bca</color>
+    <color name="white">#ffffff</color>
+    <color name="input_login">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register">#888888</color>
+    <color name="input_register_bg">#3b4148</color>
+    <color name="input_register_hint">#5e6266</color>
+    <color name="btn_login">#26ae90</color>
+    <color name="btn_login_bg">#eceef1</color>
+    <color name="lbl_name">#333333</color>
+    <color name="btn_logut_bg">#ff6861</color>
 
 </resources>
