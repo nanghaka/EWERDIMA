@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F3F4"
+    tools:context=".HelpActivity" >
+
+    <TextView
+        android:id="@+id/dialog_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#ccc"
+        android:gravity="center"
+        android:padding="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/dialog_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_header"
+        android:layout_marginBottom="2dp"
+        android:background="@null"
+        android:padding="15dp"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+
+    <Button
+        android:id="@+id/buttonCloseDialog"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/dialog_message"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:background="@color/btn_logut_bg"
+        android:contentDescription="@string/app_name"
+
+        android:text="OK"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonCloseDialog"
+        android:layout_alignTop="@+id/buttonCloseDialog"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="57dp"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/app_name"
+        android:padding="10dp"
+        android:visibility="gone"
+         />
+
+</RelativeLayout>
