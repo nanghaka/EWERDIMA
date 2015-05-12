@@ -21,11 +21,15 @@
             android:gravity="center"
             android:orientation="vertical" >
 
+<<<<<<< HEAD
             <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:text="@string/welcome"-->
                 <!--android:textSize="20dp" />-->
+=======
+
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 
             <TextView
                 android:id="@+id/name"
@@ -35,8 +39,25 @@
                 android:textColor="@color/lbl_name"
                 android:textSize="24dp" />
 
+<<<<<<< HEAD
             <Button
                 android:layout_marginTop="40dip"
+=======
+
+            <Button
+                android:id="@+id/btnfriends"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:background="@color/btn_logut_bg"
+                android:text="Add Emergency Friends"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <Button
+                android:layout_marginTop="50dip"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Report Crime"
@@ -45,7 +66,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+<<<<<<< HEAD
                 android:layout_marginBottom="74dp"
+=======
+                android:layout_marginBottom="20dp"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:background="@color/btn_logut_bg"
@@ -63,7 +88,11 @@
                 android:id="@+id/btnLogout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:layout_marginTop="40dip"
+=======
+                android:layout_marginTop="15dip"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
                 android:background="@color/btn_logut_bg"
                 android:text="@string/btn_logout"
                 android:textAllCaps="false"

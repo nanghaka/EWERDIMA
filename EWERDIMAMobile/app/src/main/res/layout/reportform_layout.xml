@@ -2,12 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
+=======
+    android:layout_margin="20dp"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
     android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:text="New Crime Report" />
+=======
+        android:text="New Crime Report"
+        android:textColor="@color/lbl_name"
+        android:textSize="20sp"/>
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 
     <!--<EditText android:id="@+id/txtCategory"-->
         <!--android:layout_width="fill_parent"-->
@@ -21,9 +31,28 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_marginBottom="40dp"/>-->
 
+<<<<<<< HEAD
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Select category"/>
+=======
+    <EditText
+        android:id="@+id/alert_cell"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Phone Number"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/custom_rounded_corner"
+        android:inputType="textMultiLine|textLongMessage" />
+
+
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Select category"
+        android:textSize="18sp"
+        android:textColor="@color/lbl_name"/>
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 
     <Spinner android:id="@+id/spinCrimes"
         android:layout_width="fill_parent"
@@ -33,18 +62,27 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Description"
+<<<<<<< HEAD
+=======
+        android:textSize="20dp"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
         android:textColor="#372c24"
         android:textStyle="bold" />
 
     <EditText
         android:id="@+id/alert_Description"
         android:layout_width="fill_parent"
+<<<<<<< HEAD
         android:layout_height="200dp"
+=======
+        android:layout_height="80dp"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dip"
         android:background="@drawable/custom_rounded_corner"
         android:inputType="textMultiLine|textLongMessage" />
 
+<<<<<<< HEAD
     <!-- Alert Button -->
 
     <Button
@@ -53,6 +91,32 @@
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="-5dp"
+=======
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Describe the Offender"
+        android:textSize="20dp"
+        android:textColor="#372c24"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/alert_description_offender"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/custom_rounded_corner"
+        android:inputType="textMultiLine|textLongMessage" />
+
+    <Button
+        android:id="@+id/send_report"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="-5dp"
+        android:layout_marginTop="5dp"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
         android:background="@drawable/alert" />
 
 

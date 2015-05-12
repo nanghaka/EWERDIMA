@@ -21,7 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
+<<<<<<< HEAD
             android:hint="@string/hint_email"
+=======
+            android:hint="Email"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
@@ -34,7 +38,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
+<<<<<<< HEAD
             android:hint="@string/hint_password"
+=======
+            android:hint="password"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
@@ -49,7 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@color/btn_login_bg"
+<<<<<<< HEAD
             android:text="@string/btn_login"
+=======
+            android:text="login"
+>>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
             android:textColor="@color/btn_login" />
 
         <!-- Link to Login Screen -->
