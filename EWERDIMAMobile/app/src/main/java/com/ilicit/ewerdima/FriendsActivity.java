@@ -2,6 +2,7 @@ package com.ilicit.ewerdima;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,7 +99,7 @@ public class FriendsActivity extends Activity {
 
             Log.e("Response sending: ", "> " + json);
 
-            if (json != null) {
+            if (json != null && json.length() >0) {
                 try {
                     JSONObject jsonObj = new JSONObject(json);
                     if (jsonObj.length() != 0) {
@@ -121,6 +122,7 @@ public class FriendsActivity extends Activity {
 
             } else {
                 Log.e("JSON Data error", "Didn't receive any data from server!");
+                message="";
             }
 
             return message;
@@ -133,8 +135,9 @@ public class FriendsActivity extends Activity {
                 pDialog.dismiss();
             }
 
-
-
+            Intent intent = new Intent(FriendsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
 
         }
     }
