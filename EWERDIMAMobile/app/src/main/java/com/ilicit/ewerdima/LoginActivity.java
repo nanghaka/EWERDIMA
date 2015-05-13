@@ -14,17 +14,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-<<<<<<< HEAD
-import com.morens.morelo.app.AppConfig;
-import com.morens.morelo.app.AppController;
-import com.morens.morelo.helper.SessionManager;
-=======
+
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
 import com.ilicit.ewerdima.helper.SQLiteHandler;
 import com.ilicit.ewerdima.helper.SessionManager;
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,10 +39,9 @@ public class LoginActivity extends Activity {
     private EditText inputPassword;
     private ProgressDialog pDialog;
     private SessionManager session;
-<<<<<<< HEAD
-=======
+
     private SQLiteHandler db;
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,10 +59,9 @@ public class LoginActivity extends Activity {
 
         // Session manager
         session = new SessionManager(getApplicationContext());
-<<<<<<< HEAD
-=======
+
         db = new SQLiteHandler(getApplicationContext());
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
@@ -140,8 +133,6 @@ public class LoginActivity extends Activity {
                         // Create login session
                         session.setLogin(true);
 
-<<<<<<< HEAD
-=======
                         String uid = jObj.getString("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
@@ -156,7 +147,6 @@ public class LoginActivity extends Activity {
                         }
 
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
                                 MainActivity.class);

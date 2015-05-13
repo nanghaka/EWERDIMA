@@ -14,19 +14,12 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-<<<<<<< HEAD
 
-import com.morens.morelo.app.AppConfig;
-import com.morens.morelo.app.AppController;
-import com.morens.morelo.helper.SQLiteHandler;
-import com.morens.morelo.helper.SessionManager;
-=======
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
 import com.ilicit.ewerdima.helper.SQLiteHandler;
 import com.ilicit.ewerdima.helper.SessionManager;
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 
 import org.json.JSONException;
 import org.json.JSONObject;

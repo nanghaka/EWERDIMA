@@ -10,11 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-<<<<<<< HEAD
+
 import android.widget.Spinner;
 import android.widget.Toast;
 
-=======
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,7 +24,7 @@ import com.ilicit.ewerdima.helper.ServiceHandler;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,11 +32,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 /**
  * Created by Dev on 4/27/2015.
  */
@@ -52,12 +46,11 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
     private ArrayList<Category> categoriesList;
     ProgressDialog pDialog;
      Button ReportButton;
-<<<<<<< HEAD
-=======
+
     double latitude;
     double longitude;
     String address = "";
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
     // API urls
 
     // Url to create new category
@@ -66,14 +59,13 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
     // Url to get all categories
     private String URL_CATEGORIES = "http://planetweneed.org/morelo/mobile/get_categories.php";
 
-<<<<<<< HEAD
-=======
+
     private String SEND_URL ="http://planetweneed.org/morelo/mobile/new_report.php";
 
     EditText txtDesc,txtDescOffender,txtPhone;
     String uid;
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,23 +74,21 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 
         //This is for the GPS Location
 
-<<<<<<< HEAD
-                String address = "";
-        GPSService mGPSService = new GPSService(ReportFormActivity.this);
-        mGPSService.getLocation();
-
-=======
 
         GPSService mGPSService = new GPSService(ReportFormActivity.this);
         mGPSService.getLocation();
+
+
+
+
 
         uid = getIntent().getExtras().getString("uid");
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
         if (mGPSService.isLocationAvailable == false) {
 
             // Here you can ask the user to try again, using return; for that
-            Toast.makeText(getApplicationContext(), "Your location is not available, please try again.", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(getApplicationContext(), "Your location is not available, please try again.", Toast.LENGTH_SHORT).show();
             return;
 
             // Or you can continue without getting the location, remove the return; above and uncomment the line given below
@@ -106,19 +96,16 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
         } else {
 
             // Getting location co-ordinates
-<<<<<<< HEAD
-            double latitude = mGPSService.getLatitude();
-            double longitude = mGPSService.getLongitude();
-=======
+
             latitude = mGPSService.getLatitude();
             longitude = mGPSService.getLongitude();
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
-            Toast.makeText(getApplicationContext(), "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
+
+        //    Toast.makeText(getApplicationContext(), "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
 
             address = mGPSService.getLocationAddress();
         }
 
-        Toast.makeText(getApplicationContext(), "Your address is: " + address, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), "Your address is: " + address, Toast.LENGTH_SHORT).show();
 
 // make sure you close the gps after using it. Save user's battery power
         mGPSService.closeGPS();
@@ -126,13 +113,11 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 
 //        btnAddNewCategory = (Button) findViewById(R.id.btnAddNewCategory);
         spinnerFood = (Spinner) findViewById(R.id.spinCrimes);
-<<<<<<< HEAD
-//        txtCategory = (TextView) findViewById(R.id.txtCategory);
-=======
+
         txtDesc = (EditText) findViewById(R.id.alert_Description);
         txtDescOffender = (EditText) findViewById(R.id.alert_description_offender);
         txtPhone = (EditText) findViewById(R.id.alert_cell);
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
 
         categoriesList = new ArrayList<Category>();
 
@@ -143,13 +128,11 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
         ReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-                Intent finalintent = new Intent(ReportFormActivity.this, FinalActivity.class);
-                startActivity(finalintent);
-=======
+
+
+
                 new SendDetails().execute();
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
             }
         });
 
@@ -335,18 +318,17 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
-        Toast.makeText(
-                getApplicationContext(),
-                parent.getItemAtPosition(position).toString() + " Selected" ,
-                Toast.LENGTH_LONG).show();
+       // Toast.makeText(
+         //       getApplicationContext(),
+           //     parent.getItemAtPosition(position).toString() + " Selected" ,
+             //   Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
     }
-<<<<<<< HEAD
-=======
+
 
     public class SendDetails extends AsyncTask<String, String, String>{
 
@@ -452,7 +434,7 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 
 
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
 }
 
 

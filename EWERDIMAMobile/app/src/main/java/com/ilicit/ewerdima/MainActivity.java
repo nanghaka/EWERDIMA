@@ -1,18 +1,16 @@
 package com.ilicit.ewerdima;
 
 import android.app.Activity;
-<<<<<<< HEAD
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.morens.morelo.helper.SQLiteHandler;
-import com.morens.morelo.helper.SessionManager;
+
 
 import java.util.HashMap;
-=======
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -43,76 +41,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
 
 
 public class MainActivity extends Activity {
-
-    private Button ReportCrime;
-
-    private TextView txtName;
-    private TextView txtEmail;
-    private Button btnLogout;
-
-    private SQLiteHandler db;
-    private SessionManager session;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-
-//        String address = "";
-//        GPSService mGPSService = new GPSService(MainActivity.this);
-//        mGPSService.getLocation();
-//
-//        if (mGPSService.isLocationAvailable == false) {
-//
-//            // Here you can ask the user to try again, using return; for that
-//            Toast.makeText(getApplicationContext(), "Your location is not available, please try again.", Toast.LENGTH_SHORT).show();
-//            return;
-//
-//            // Or you can continue without getting the location, remove the return; above and uncomment the line given below
-//            // address = "Location not available";
-//        } else {
-//
-//            // Getting location co-ordinates
-//            double latitude = mGPSService.getLatitude();
-//            double longitude = mGPSService.getLongitude();
-//            Toast.makeText(getApplicationContext(), "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
-//
-//            address = mGPSService.getLocationAddress();
-//        }
-//
-//        Toast.makeText(getApplicationContext(), "Your address is: " + address, Toast.LENGTH_SHORT).show();
-//
-//// make sure you close the gps after using it. Save user's battery power
-//        mGPSService.closeGPS();
-
-        txtName = (TextView) findViewById(R.id.name);
-        txtEmail = (TextView) findViewById(R.id.email);
-        btnLogout = (Button) findViewById(R.id.btnLogout);
-        ReportCrime = (Button) findViewById(R.id.Reportbutton);
-
-        // SqLite database handler
-        db = new SQLiteHandler(getApplicationContext());
-
-        // session manager
-        session = new SessionManager(getApplicationContext());
-
-<<<<<<< HEAD
-        if (!session.isLoggedIn()) {
-            logoutUser();
-        }
-
-        // Fetching user details from sqlite
-        HashMap<String, String> user = db.getUserDetails();
-
-        String name = user.get("name");
-        String email = user.get("email");
-=======
-    public static final String GCM_SENDER_ID ="1074367254642";
+    public static final String GCM_SENDER_ID = "1074367254642";
 
     public static final String PREFS_NAME = "Ewerdima_GCM";
     public static final String PREFS_PROPERTY_REG_ID = "registration_id";
@@ -120,7 +53,7 @@ public class MainActivity extends Activity {
     String regid;
     SharedPreferences prefs;
 
-    private String REG_URL ="http://planetweneed.org/ewerdima/mobile/gcm/register.php";
+    private String REG_URL = "http://planetweneed.org/ewerdima/mobile/gcm/register.php";
     double latitude;
     double longitude;
 
@@ -128,17 +61,17 @@ public class MainActivity extends Activity {
 
     private TextView txtName;
     private TextView txtEmail;
-    private Button btnLogout,addFriends;
+    private Button btnLogout, addFriends;
 
     private SQLiteHandler db;
     private SessionManager session;
     String uid;
 
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         txtName = (TextView) findViewById(R.id.name);
         txtEmail = (TextView) findViewById(R.id.email);
@@ -150,10 +83,8 @@ public class MainActivity extends Activity {
         gcm = GoogleCloudMessaging.getInstance(this);
 
 
-
         GPSService mGPSService = new GPSService(MainActivity.this);
         mGPSService.getLocation();
-
 
 
         if (mGPSService.isLocationAvailable == false) {
@@ -169,18 +100,14 @@ public class MainActivity extends Activity {
             // Getting location co-ordinates
             latitude = mGPSService.getLatitude();
             longitude = mGPSService.getLongitude();
-           // Toast.makeText(getApplicationContext(), "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(), "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
 
-           // address = mGPSService.getLocationAddress();
+            // address = mGPSService.getLocationAddress();
         }
-
 
 
 // make sure you close the gps after using it. Save user's battery power
         mGPSService.closeGPS();
-
-
-
 
 
         // SqLite database handler
@@ -199,7 +126,7 @@ public class MainActivity extends Activity {
         String name = user.get("name");
         String email = user.get("email");
         uid = user.get("uid");
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
 
         // Displaying the user details on the screen
         txtName.setText(name);
@@ -210,10 +137,9 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent reportIntent = new Intent(MainActivity.this, ReportFormActivity.class);
-<<<<<<< HEAD
-=======
-                reportIntent.putExtra("uid",user.get("uid"));
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
+
+                reportIntent.putExtra("uid", user.get("uid"));
+
                 startActivity(reportIntent);
             }
         });
@@ -226,14 +152,6 @@ public class MainActivity extends Activity {
                 logoutUser();
             }
         });
-<<<<<<< HEAD
-    }
-
-    /**
-     * Logging out the user. Will set isLoggedIn flag to false in shared
-     * preferences Clears the user data from sqlite users table
-     * */
-=======
 
 
         if (getRegistrationId().equalsIgnoreCase("")) {
@@ -241,7 +159,7 @@ public class MainActivity extends Activity {
         } else {
             if (isOnline()) {
 
-              //  sendInBackground(getRegistrationId());
+                //  sendInBackground(getRegistrationId());
             }
         }
 
@@ -256,12 +174,7 @@ public class MainActivity extends Activity {
             }
         });
 
-
-
-
-
-	}
-
+    }
 
 
     private void registerInBackground() {
@@ -277,7 +190,7 @@ public class MainActivity extends Activity {
                     regid = gcm.register(GCM_SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
 
-                    if(isOnline()) {
+                    if (isOnline()) {
                         sendInBackground(regid);
                     }
                     storeRegistrationId(regid);
@@ -305,9 +218,9 @@ public class MainActivity extends Activity {
         editor.commit();
     }
 
-    private String getRegistrationId(){
+    private String getRegistrationId() {
         String reg = "";
-        reg = prefs.getString(PREFS_PROPERTY_REG_ID,"");
+        reg = prefs.getString(PREFS_PROPERTY_REG_ID, "");
         return reg;
     }
 
@@ -315,7 +228,7 @@ public class MainActivity extends Activity {
     private void sendInBackground(String reg) {
         String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        new SendDetails().execute(reg,String.valueOf(latitude),String.valueOf(longitude),uid);
+        new SendDetails().execute(reg, String.valueOf(latitude), String.valueOf(longitude), uid);
 
     }
 
@@ -328,8 +241,7 @@ public class MainActivity extends Activity {
     }
 
 
-
-    public class SendDetails extends AsyncTask<String, String, String>{
+    public class SendDetails extends AsyncTask<String, String, String> {
 
         boolean error;
 
@@ -339,8 +251,6 @@ public class MainActivity extends Activity {
 
 
         }
-
-
 
 
         @Override
@@ -359,10 +269,7 @@ public class MainActivity extends Activity {
                     "useruniqueid", params[3]));
 
 
-
-
-
-            String json = jsonParser.makeServiceCall(REG_URL, ServiceHandler.POST,nameValuePairs);
+            String json = jsonParser.makeServiceCall(REG_URL, ServiceHandler.POST, nameValuePairs);
 
             Log.e("Response sending: ", "> " + json);
 
@@ -370,14 +277,14 @@ public class MainActivity extends Activity {
                 try {
                     JSONObject jsonObj = new JSONObject(json);
                     if (jsonObj.length() != 0) {
-                        if(jsonObj.getInt("success") > 0){
-                            Log.e("error",""+jsonObj.toString());
+                        if (jsonObj.getInt("success") > 0) {
+                            Log.e("error", "" + jsonObj.toString());
                             message = "Sucess";
 
 
-                        }else{
+                        } else {
                             message = "Failure";
-                           int err =jsonObj.getInt("failure");
+                            int err = jsonObj.getInt("failure");
 
                         }
 
@@ -399,12 +306,10 @@ public class MainActivity extends Activity {
             super.onPostExecute(result);
 
 
-
-
         }
+
     }
 
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
     private void logoutUser() {
         session.setLogin(false);
 
@@ -415,11 +320,7 @@ public class MainActivity extends Activity {
         startActivity(intent);
         finish();
     }
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 }
+
 

@@ -3,8 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-<<<<<<< HEAD
-=======
+
     <string name="app_id">1579382288949679</string>
     <string name="title_activity_location">Location Fragment</string>
     <string name="title_activity_alert">Alert Fragment</string>
@@ -34,9 +33,6 @@
     <string name="com_parse_ui_facebook_login_failed_toast">Facebook login failed</string>
     <string name="com_parse_ui_twitter_login_failed_toast">Twitter login failed</string>
 
-
-
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Fullname</string>
@@ -47,10 +43,5 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Fullname</string>
-<<<<<<< HEAD
 
-
-=======
-    
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 </resources>

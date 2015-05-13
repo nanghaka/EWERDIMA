@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.ilicit.ewerdima.Models.MyUsers;
+import com.ilicit.ewerdima.Models.Results;
 import com.ilicit.ewerdima.helper.SQLiteHandler;
 import com.ilicit.ewerdima.helper.ServiceHandler;
 
@@ -31,10 +34,12 @@ public class FriendsActivity extends Activity {
     Button add;
     EditText email;
     private String URL ="http://planetweneed.org/ewerdima/mobile/gcm/usercircles.php";
+    private String URL_Circles ="http://planetweneed.org/ewerdima/mobile/usercircles.php";
     private SQLiteHandler db;
     String uid;
     ListView list;
     private ProgressDialog pDialog;
+    ArrayList<MyUsers> friends = new ArrayList<MyUsers>();
 
 
 
@@ -60,7 +65,7 @@ public class FriendsActivity extends Activity {
         uid = user.get("uid");
 
 
-
+        new GetFriends().execute(uid);
 
 
     }
@@ -135,13 +140,91 @@ public class FriendsActivity extends Activity {
                 pDialog.dismiss();
             }
 
-            Intent intent = new Intent(FriendsActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            new GetFriends().execute(uid);
 
         }
     }
 
+
+
+
+
+    public class GetFriends extends AsyncTask<String, String, String> {
+
+        boolean error;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(FriendsActivity.this);
+            pDialog.setMessage("please wait ...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
+
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            ServiceHandler jsonParser = new ServiceHandler();
+            String message = "";
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+            nameValuePairs.add(new BasicNameValuePair(
+                    "registereduserid1", params[0]));
+
+            String json = jsonParser.makeServiceCall(URL_Circles, ServiceHandler.GET,nameValuePairs);
+
+            Log.e("Response sending: ", "> " + json);
+
+            if (json != null && json.length() >0) {
+                try {
+                    Gson gson = new Gson();
+                    Results jsonObj =  gson.fromJson(json, Results.class);
+                    if (jsonObj.getUsers_Circles().size() != 0) {
+
+
+                        message = "Success";
+                        friends.clear();
+
+                        friends.addAll(jsonObj.getUsers_Circles());
+
+                    }
+
+                        else{
+                            message = "Failure";
+                          //  int err =jsonObj.getInt("failure");
+
+                        }
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Log.e("JSON Data error", "Didn't receive any data from server!");
+                message="";
+            }
+
+            return message;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+
+           list.setAdapter(new FriendsListAdapter(FriendsActivity.this,friends));
+
+
+        }
+    }
 
 
 

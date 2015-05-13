@@ -23,12 +23,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.github.markushi:circlebutton:1.1'
-<<<<<<< HEAD
-    compile 'com.mcxiaoke.volley:library:1.0.15'
-=======
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.mcxiaoke.volley:library:1.0.15'
+    compile 'com.google.code.gson:gson:2.3.1'
 
-
->>>>>>> 408002d69e7eaa22918c7bb4bfdcb077f73a09db
 }
