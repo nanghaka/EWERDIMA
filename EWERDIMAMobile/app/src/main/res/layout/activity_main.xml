@@ -49,12 +49,11 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Report Emergency"
+                android:text="@string/reportem"
                 android:id="@+id/Reportbutton"
                 android:shadowColor="@color/white"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-
 
 
                 android:layout_marginBottom="20dp"

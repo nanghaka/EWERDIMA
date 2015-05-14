@@ -3,6 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="reportem">Report Emergency </string>
 
     <string name="app_id">1579382288949679</string>
     <string name="title_activity_location">Location Fragment</string>
