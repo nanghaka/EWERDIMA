@@ -46,11 +46,14 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
     // API urls
 
 
+
     // Url to get all categories
     private String URL_CATEGORIES = "http://planetweneed.org/ewerdima/mobile/get_categories.php";
 
 
-    private String SEND_URL ="http://planetweneed.org/ewerdima/mobile/new_report.php";
+
+    private String SEND_URL ="http://planetweneed.org/ewerdima/mobile/gcm/new_report.php";
+
 
     EditText txtDesc,txtDescOffender,txtPhone;
     String uid;
@@ -370,14 +373,14 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
                 try {
                     JSONObject jsonObj = new JSONObject(json);
                     if (jsonObj.length() != 0) {
-                        if(jsonObj.getBoolean("error")){
-                            Log.e("error",""+jsonObj.toString());
-                            message = jsonObj.getString("message");
-                            error =jsonObj.getBoolean("error");
+                        if(jsonObj.getInt("success")>0){
+
+                            message = "Report created successfully";
+                          //  error =jsonObj.getBoolean("error");
 
                         }else{
-                            message = jsonObj.getString("message");
-                            error =jsonObj.getBoolean("error");
+                            message = "Report Failed.Please try again later.";
+                           // error =jsonObj.getBoolean("error");
                         }
 
                     }
