@@ -49,7 +49,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Report Crime"
+                android:text="Report Emergency"
                 android:id="@+id/Reportbutton"
                 android:shadowColor="@color/white"
                 android:layout_alignParentBottom="true"
