@@ -10,21 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-
-import android.widget.Spinner;
-import android.widget.Toast;
-
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.ilicit.ewerdima.dialog.ProgressDialogButton;
-import com.ilicit.ewerdima.helper.GPSService;
-import com.ilicit.ewerdima.helper.ServiceHandler;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,14 +45,12 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 
     // API urls
 
-    // Url to create new category
-    private String URL_NEW_CATEGORY = "http://planetweneed.org/morelo/mobile/new_category.php";
 
     // Url to get all categories
-    private String URL_CATEGORIES = "http://planetweneed.org/morelo/mobile/get_categories.php";
+    private String URL_CATEGORIES = "http://planetweneed.org/ewerdima/mobile/get_categories.php";
 
 
-    private String SEND_URL ="http://planetweneed.org/morelo/mobile/new_report.php";
+    private String SEND_URL ="http://planetweneed.org/ewerdima/mobile/new_report.php";
 
     EditText txtDesc,txtDescOffender,txtPhone;
     String uid;
@@ -364,7 +354,7 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
             nameValuePairs.add(new BasicNameValuePair(
                     "locationlong", String.valueOf(longitude)));
             nameValuePairs.add(new BasicNameValuePair(
-                    "descriptionoffender", txtDescOffender.getText().toString()));
+                    "descriptionoffender",""));
             nameValuePairs.add(new BasicNameValuePair(
                     "descriptionreport", txtDesc.getText().toString()));
             nameValuePairs.add(new BasicNameValuePair(

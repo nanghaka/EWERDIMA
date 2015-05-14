@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:text="New Crime Report"
+        android:text="New Emmergency Report"
         android:textColor="@color/lbl_name"
         android:textSize="20sp"/>
 
@@ -85,12 +85,14 @@
         android:text="Describe the Offender"
         android:textSize="20dp"
         android:textColor="#372c24"
+        android:visibility="gone"
         android:textStyle="bold" />
 
     <EditText
         android:id="@+id/alert_description_offender"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
+        android:visibility="gone"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dip"
         android:background="@drawable/custom_rounded_corner"
