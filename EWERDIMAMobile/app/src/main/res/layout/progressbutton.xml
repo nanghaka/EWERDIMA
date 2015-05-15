@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#ccc"
+        android:background="@color/btn_logut_bg"
         android:gravity="center"
         android:padding="5dp"
         android:paddingLeft="15dp"

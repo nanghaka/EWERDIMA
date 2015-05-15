@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.ilicit.ewerdima.dialog.ProgressDialogButton;
 import com.ilicit.ewerdima.helper.GPSService;
 import com.ilicit.ewerdima.helper.SQLiteHandler;
 import com.ilicit.ewerdima.helper.ServiceHandler;
@@ -82,9 +83,36 @@ public class MainActivity extends Activity {
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         gcm = GoogleCloudMessaging.getInstance(this);
 
+        if(getIntent().getExtras() != null) {
+            if (getIntent().getExtras().containsKey("gcm")) {
+
+                String mes = getIntent().getExtras().getString("title");
+                final ProgressDialogButton dialogButton = new ProgressDialogButton(MainActivity.this, "Ewerdima Alert", mes);
+                dialogButton.setCancelable(false);
+
+                dialogButton.show();
+                dialogButton.setOkClickedAction("OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogButton.dismiss();
+
+                            }
+                        });
+
+
+            }
+        }
+
+
+
 
         GPSService mGPSService = new GPSService(MainActivity.this);
         mGPSService.getLocation();
+
+
+
+
 
 
         if (mGPSService.isLocationAvailable == false) {

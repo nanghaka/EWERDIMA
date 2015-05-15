@@ -116,7 +116,7 @@ public class GCMIntentService extends IntentService {
         Log.e(TAG, data.toString());
         String title = "Ewerdima";
         String message = String.format("%s ", data.getString(TEXT));
-        String id = "";
+        String id = "1";
         if(data.containsKey("program_id")) {
              id = String.format("%s", data.getString("program_id")).trim();
 
@@ -137,7 +137,7 @@ public class GCMIntentService extends IntentService {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtras(data);
         intent.putExtra(TITLE, message);
-        intent.putExtra("id", id);
+        intent.putExtra("gcm", id);
 
 
         count++;

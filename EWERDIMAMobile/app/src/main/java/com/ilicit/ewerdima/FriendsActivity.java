@@ -57,7 +57,11 @@ public class FriendsActivity extends Activity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SendFriends().execute(uid,email.getText().toString());
+                if(Utils.isValidEmail(email.getText().toString())) {
+                    new SendFriends().execute(uid, email.getText().toString());
+                }else{
+                    email.setError("Invalid Email");
+                }
             }
         });
 
