@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="BACKGROUND_COLOR">#ff6861</color>
+    <color name="COLOR_WHILE_PRESSING">#ff55ff37</color>
+    <color name="white">#fff</color>
+    <color name="yellow">#453 </color>
+
+</resources>

@@ -1,0 +1,13 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<ripple android:color="@color/COLOR_WHILE_PRESSING" xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <!--<item android:drawable="@drawable/background"></item>-->
+<!--</ripple>-->
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+android:color="?android:colorControlHighlight">
+<item>
+    <shape android:shape="oval">
+        <solid android:color="?android:colorAccent" />
+    </shape>
+</item>
+</ripple>
