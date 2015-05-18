@@ -59,7 +59,9 @@
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                android:visibility="gone"
+                />
 
         </LinearLayout>
 
@@ -68,7 +70,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/btn_logut_bg"
-            android:text="Add Emergency Friends"
+            android:text="Add Emergency Contacts"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15dp"

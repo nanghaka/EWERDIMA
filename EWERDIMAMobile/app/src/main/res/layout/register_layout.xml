@@ -7,6 +7,17 @@
     android:orientation="vertical"
     android:padding="10dp" >
 
+    <ImageView
+        android:layout_width="122dp"
+        android:layout_height="122dp"
+        android:id="@+id/logo"
+        android:background="@drawable/logo" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ewerdima"/>
+
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

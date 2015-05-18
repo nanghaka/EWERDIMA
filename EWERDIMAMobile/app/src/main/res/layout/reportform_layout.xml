@@ -2,18 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:layout_margin="20dp"
-
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:text="New Emmergency Report"
-        android:textColor="@color/lbl_name"
-        android:textSize="20sp"/>
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:background="@color/btn_login"/>
 
 
     <!--<EditText android:id="@+id/txtCategory"-->
@@ -44,13 +43,17 @@
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Select category"
-        android:textSize="18sp"
+        android:textSize="20dp"
+        android:textStyle="bold"
         android:textColor="@color/lbl_name"/>
 
 
     <Spinner android:id="@+id/spinCrimes"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/lbl_name"
+        />
 
     <TextView
         android:layout_width="fill_parent"
@@ -67,7 +70,6 @@
         android:layout_width="fill_parent"
 
         android:layout_height="200dp"
-
 
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dip"

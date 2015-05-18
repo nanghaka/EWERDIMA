@@ -1,17 +1,6 @@
 package com.ilicit.ewerdima;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-
-
-import java.util.HashMap;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,7 +50,7 @@ public class MainActivity extends Activity {
     private Button ReportCrime;
 
     private TextView txtName;
-    private TextView txtEmail;
+  //  private TextView txtEmail;
     private Button btnLogout, addFriends;
 
     private SQLiteHandler db;
@@ -75,7 +64,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         txtName = (TextView) findViewById(R.id.name);
-        txtEmail = (TextView) findViewById(R.id.email);
+     //   txtEmail = (TextView) findViewById(R.id.email);
         btnLogout = (Button) findViewById(R.id.btnLogout);
         ReportCrime = (Button) findViewById(R.id.Reportbutton);
         addFriends = (Button) findViewById(R.id.btnfriends);
@@ -152,13 +141,13 @@ public class MainActivity extends Activity {
         final HashMap<String, String> user = db.getUserDetails();
 
         String name = user.get("name");
-        String email = user.get("email");
+      //  String email = user.get("email");
         uid = user.get("uid");
 
 
         // Displaying the user details on the screen
         txtName.setText(name);
-        txtEmail.setText(email);
+        //txtEmail.setText(email);
 
         //Report Crime Button
         ReportCrime.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +199,7 @@ public class MainActivity extends Activity {
             @Override
             protected String doInBackground(Void... params) {
                 String msg = "";
-                Log.e("Ewerdima", "Registration back");
+                Log.e("EWERDIMA", "Registration back");
                 try {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(MainActivity.this);
@@ -226,7 +215,7 @@ public class MainActivity extends Activity {
 
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
-                    Log.e("Ewerdima", msg);
+                    Log.e("EWERDIMA", msg);
                 }
                 return msg;
             }

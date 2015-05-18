@@ -186,7 +186,7 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(ReportFormActivity.this);
-            pDialog.setMessage("Fetching Criminal categories...");
+            pDialog.setMessage("Fetching Emergency categories...");
             pDialog.setCancelable(false);
             pDialog.show();
 
