@@ -43,16 +43,16 @@
 
                 <Button
                     android:background="@drawable/round_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:text="@string/reportem"
                     android:id="@+id/Reportbutton"
                     android:shadowColor="@color/white"
                     android:gravity="center_vertical|center_horizontal"
-
                     android:textColor="@color/white"
                     android:textSize="15dp"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" />
             </RelativeLayout>
 
             <TextView
@@ -73,8 +73,8 @@
             android:textColor="@color/white"
             android:textSize="15dp"
             android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/linearLayout2"
-            android:layout_alignStart="@+id/linearLayout2" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Button
             android:id="@+id/btnLogout"
@@ -87,8 +87,10 @@
             android:textColor="@color/white"
             android:textSize="15dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/linearLayout2"
-            android:layout_alignStart="@+id/linearLayout2" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
