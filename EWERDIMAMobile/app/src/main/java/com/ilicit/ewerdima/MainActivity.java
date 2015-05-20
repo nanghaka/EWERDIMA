@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
     String regid;
     SharedPreferences prefs;
 
-    private String REG_URL = "http://planetweneed.org/ewerdima/mobile/gcm/register.php";
+    private String REG_URL = "http://ewerdima.cloudapp.net/index.php/api/rest/register";
     double latitude;
     double longitude;
 
@@ -85,6 +85,7 @@ public class MainActivity extends Activity {
                             @Override
                             public void onClick(View v) {
                                 dialogButton.dismiss();
+                                getIntent().getExtras().clear();
 
                             }
                         });
@@ -176,7 +177,7 @@ public class MainActivity extends Activity {
         } else {
             if (isOnline()) {
 
-                //  sendInBackground(getRegistrationId());
+                sendInBackground(getRegistrationId());
             }
         }
 
@@ -272,12 +273,12 @@ public class MainActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            ServiceHandler jsonParser = new ServiceHandler();
+            ServiceHandler jsonParser = new ServiceHandler(MainActivity.this);
             String message = "";
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
             nameValuePairs.add(new BasicNameValuePair(
-                    "regId", params[0]));
+                    "gcm_regid", params[0]));
             nameValuePairs.add(new BasicNameValuePair(
                     "devicelat", params[1]));
             nameValuePairs.add(new BasicNameValuePair(

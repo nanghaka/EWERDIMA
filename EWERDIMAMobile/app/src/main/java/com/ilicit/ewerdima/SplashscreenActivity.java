@@ -28,14 +28,14 @@ public class SplashscreenActivity extends Activity {
             _tik = new CountDown(2000, 2000, this, LoginActivity.class); // It delay the screen for 1 second and after that switch to YourNextActivity
             _tik.start();
 
-            Utils.save("apiUsername", "rusokoni_api", this);
-            Utils.save("apipassword", "zZj0IdM0wC\"2e4M", this);
+            Utils.save("apiUsername", "ewerdima_api", this);
+            Utils.save("apipassword", "zZj0IdM0wCV2e4M", this);
         }else{
             _tik = new CountDown(2000, 2000, this, MainActivity.class); // It delay the screen for 1 second and after that switch to YourNextActivity
             _tik.start();
 
-            Utils.save("apiUsername", "rusokoni_api", this);
-            Utils.save("apipassword", "zZj0IdM0wC\"2e4M", this);
+            Utils.save("apiUsername", "ewerdima_api", this);
+            Utils.save("apipassword", "zZj0IdM0wCV2e4M", this);
 
         }
 

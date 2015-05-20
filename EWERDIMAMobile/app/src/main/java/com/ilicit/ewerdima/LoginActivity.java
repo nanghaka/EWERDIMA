@@ -3,6 +3,7 @@ package com.ilicit.ewerdima;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,16 +16,23 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.ilicit.ewerdima.Models.MyUsers;
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
-import com.ilicit.ewerdima.helper.SQLiteHandler;
-import com.ilicit.ewerdima.helper.SessionManager;
+import com.ilicit.ewerdima.helper.*;
+import com.ilicit.ewerdima.helper.ServiceHandler;
 
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,6 +63,7 @@ public class LoginActivity extends Activity {
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
+        pDialog.setMessage("please wait....");
         pDialog.setCancelable(false);
 
         // Session manager
@@ -81,7 +90,14 @@ public class LoginActivity extends Activity {
                 // Check for empty data in the form
                 if (email.trim().length() > 0 && password.trim().length() > 0) {
                     // login user
-                    checkLogin(email, password);
+                    if(Utils.isNetworkAvailable(LoginActivity.this)) {
+                       new  CheckLogin().execute(email,password);
+
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                                .show();
+                    }
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -105,40 +121,66 @@ public class LoginActivity extends Activity {
 
     }
 
-    /**
-     * function to verify login details in mysql db
-     * */
-    private void checkLogin(final String email, final String password) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_login";
 
-        pDialog.setMessage("Logging in ...");
-        showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_REGISTER, new Response.Listener<String>() {
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
 
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.toString());
-                hideDialog();
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
 
+
+    public class CheckLogin extends AsyncTask<String, String, String> {
+
+        boolean error;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog();
+
+        }
+
+
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            ServiceHandler jsonParser = new ServiceHandler(LoginActivity.this);
+            String message = "";
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+            nameValuePairs.add(new BasicNameValuePair(
+                    "email", params[0]));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "password", params[1]));
+
+            String json = jsonParser.makeServiceCall(AppConfig.URL_LOGIN, ServiceHandler.POST,nameValuePairs);
+
+            Log.e("Response sending: ", "> " + json);
+
+            if (json != null && json.length() >0) {
                 try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    JSONObject jObj = new JSONObject(json);
+                    boolean status = true;
 
-                    // Check for error node in json
-                    if (!error) {
-                        // user successfully logged in
-                        // Create login session
+                    if(jObj.has("uid")) {
+
+
+
                         session.setLogin(true);
 
-                        String uid = jObj.getString("uid");
 
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String created_at = user.getString("created_at");
+                        String uid = jObj.getString("unique_id");
+
+
+                        String name = jObj.getString("name");
+                        String email = jObj.getString("email");
+                        String created_at = jObj.getString("created_at");
 
                         // Inserting row in users table
                         if(db.getRowCount() <= 0){
@@ -154,51 +196,40 @@ public class LoginActivity extends Activity {
                         finish();
                     } else {
                         // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                       message = jObj.getString("Error");
+
                     }
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
                 }
 
+            } else {
+                Log.e("JSON Data error", "Didn't receive any data from server!");
+                message="";
             }
-        }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
+            return message;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            hideDialog();
+            if(result.equalsIgnoreCase("")){
+
+            }else {
+
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "login");
-                params.put("email", email);
-                params.put("password", password);
-
-                return params;
+                        result, Toast.LENGTH_LONG).show();
             }
 
-        };
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+
+        }
     }
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
+
 }

@@ -12,11 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ilicit.ewerdima.dialog.ProgressDialogButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import com.ilicit.ewerdima.helper.ServiceHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,11 +50,11 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 
 
     // Url to get all categories
-    private String URL_CATEGORIES = "http://planetweneed.org/ewerdima/mobile/get_categories.php";
+    private String URL_CATEGORIES = "http://ewerdima.cloudapp.net/index.php/api/rest/categories";
 
 
 
-    private String SEND_URL ="http://planetweneed.org/ewerdima/mobile/gcm/new_report.php";
+    private String SEND_URL ="http://ewerdima.cloudapp.net/index.php/api/rest/createNewReport";
 
 
     EditText txtDesc,txtDescOffender,txtPhone;
@@ -122,9 +124,16 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
             @Override
             public void onClick(View v) {
 
+                if(Utils.isNetworkAvailable(ReportFormActivity.this)) {
+                    new SendDetails().execute();
+
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                            .show();
+                }
 
 
-                new SendDetails().execute();
 
             }
         });
@@ -148,8 +157,16 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 //                }
 //            }
 //        });
+        if(Utils.isNetworkAvailable(ReportFormActivity.this)) {
+            new GetCategories().execute();
 
-        new GetCategories().execute();
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+
 
     }
 
@@ -194,20 +211,19 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            ServiceHandler jsonParser = new ServiceHandler();
+            ServiceHandler jsonParser = new ServiceHandler(ReportFormActivity.this);
             String json = jsonParser.makeServiceCall(URL_CATEGORIES, ServiceHandler.GET);
 
             Log.e("Response: ", "> " + json);
 
             if (json != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(json);
+                    JSONArray jsonObj = new JSONArray(json);
                     if (jsonObj != null) {
-                        JSONArray categories = jsonObj
-                                .getJSONArray("categories");
 
-                        for (int i = 0; i < categories.length(); i++) {
-                            JSONObject catObj = (JSONObject) categories.get(i);
+
+                        for (int i = 0; i < jsonObj.length(); i++) {
+                            JSONObject catObj = (JSONObject) jsonObj.get(i);
                             Category cat = new Category(catObj.getInt("id"),
                                     catObj.getString("name"));
                             categoriesList.add(cat);
@@ -342,7 +358,7 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
 
         @Override
         protected String doInBackground(String... params) {
-            ServiceHandler jsonParser = new ServiceHandler();
+            ServiceHandler jsonParser = new ServiceHandler(ReportFormActivity.this);
             String message = "";
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
@@ -375,7 +391,7 @@ public class ReportFormActivity extends Activity implements AdapterView.OnItemSe
                     if (jsonObj.length() != 0) {
                         if(jsonObj.getInt("success")>0){
 
-                            message = "Report created successfully";
+                            message = "Created report and notified contacts.";
                           //  error =jsonObj.getBoolean("error");
 
                         }else{

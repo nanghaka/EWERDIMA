@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ilicit.ewerdima.Models.MyUsers;
 import com.ilicit.ewerdima.Models.Results;
 import com.ilicit.ewerdima.helper.SQLiteHandler;
@@ -33,8 +35,8 @@ public class FriendsActivity extends Activity {
 
     Button add;
     EditText email;
-    private String URL ="http://planetweneed.org/ewerdima/mobile/gcm/usercircles.php";
-    private String URL_Circles ="http://planetweneed.org/ewerdima/mobile/usercircles.php";
+    private String URL ="http://ewerdima.cloudapp.net/index.php/api/rest/addContacts";
+    private String URL_Circles ="http://ewerdima.cloudapp.net/index.php/api/rest/usercircles/";
     private SQLiteHandler db;
     String uid;
     ListView list;
@@ -58,7 +60,15 @@ public class FriendsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(Utils.isValidEmail(email.getText().toString())) {
-                    new SendFriends().execute(uid, email.getText().toString());
+                    if(Utils.isNetworkAvailable(FriendsActivity.this)) {
+                        new SendFriends().execute(uid, email.getText().toString());
+
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                                .show();
+                    }
+
                 }else{
                     email.setError("Invalid Email");
                 }
@@ -68,8 +78,16 @@ public class FriendsActivity extends Activity {
         HashMap<String, String> user = db.getUserDetails();
         uid = user.get("uid");
 
+        if(Utils.isNetworkAvailable(FriendsActivity.this)) {
+            new GetFriends().execute(uid);
 
-        new GetFriends().execute(uid);
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+
 
 
     }
@@ -94,7 +112,7 @@ public class FriendsActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            ServiceHandler jsonParser = new ServiceHandler();
+            ServiceHandler jsonParser = new ServiceHandler(FriendsActivity.this);
             String message = "";
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
@@ -144,7 +162,16 @@ public class FriendsActivity extends Activity {
                 pDialog.dismiss();
             }
 
-            new GetFriends().execute(uid);
+            if(Utils.isNetworkAvailable(FriendsActivity.this)) {
+                new GetFriends().execute(uid);
+
+            }else{
+                Toast.makeText(getApplicationContext(),
+                        "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                        .show();
+            }
+
+
 
         }
     }
@@ -172,28 +199,29 @@ public class FriendsActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            ServiceHandler jsonParser = new ServiceHandler();
+            ServiceHandler jsonParser = new ServiceHandler(FriendsActivity.this);
             String message = "";
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
             nameValuePairs.add(new BasicNameValuePair(
                     "registereduserid1", params[0]));
 
-            String json = jsonParser.makeServiceCall(URL_Circles, ServiceHandler.GET,nameValuePairs);
+            String json = jsonParser.makeServiceCall(URL_Circles+params[0], ServiceHandler.GET,nameValuePairs);
 
             Log.e("Response sending: ", "> " + json);
 
             if (json != null && json.length() >0) {
                 try {
                     Gson gson = new Gson();
-                    Results jsonObj =  gson.fromJson(json, Results.class);
-                    if (jsonObj.getUsers_Circles().size() != 0) {
+                    ArrayList<MyUsers> jsonObj = new Gson().fromJson(json, new TypeToken<List<MyUsers>>(){}.getType());
+
+                    if (jsonObj.size() != 0) {
 
 
                         message = "Success";
                         friends.clear();
 
-                        friends.addAll(jsonObj.getUsers_Circles());
+                        friends.addAll(jsonObj);
 
                     }
 

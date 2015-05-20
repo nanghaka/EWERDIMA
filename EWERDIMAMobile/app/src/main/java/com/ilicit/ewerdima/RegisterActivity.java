@@ -3,6 +3,7 @@ package com.ilicit.ewerdima;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,14 +18,17 @@ import com.android.volley.toolbox.StringRequest;
 
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
-import com.ilicit.ewerdima.helper.SQLiteHandler;
-import com.ilicit.ewerdima.helper.SessionManager;
+import com.ilicit.ewerdima.helper.*;
 
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,6 +58,7 @@ public class RegisterActivity extends Activity {
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
+        pDialog.setMessage("please wait....");
         pDialog.setCancelable(false);
 
         // Session manager
@@ -79,7 +84,15 @@ public class RegisterActivity extends Activity {
                 String password = inputPassword.getText().toString();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+                    if(Utils.isNetworkAvailable(RegisterActivity.this)) {
+
+                        new RegisterUser().execute(email,password,name);
+                    }else {
+                        Toast.makeText(getApplicationContext(),
+                                "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                                .show();
+                    }
+
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Please enter your details!", Toast.LENGTH_LONG)
@@ -105,84 +118,7 @@ public class RegisterActivity extends Activity {
      * Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url
      * */
-    private void registerUser(final String name, final String email,
-                              final String password) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_register";
 
-        pDialog.setMessage("Registering ...");
-        showDialog();
-
-        StringRequest strReq = new StringRequest(Method.POST,
-                AppConfig.URL_REGISTER, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
-                hideDialog();
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
-
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String created_at = user.getString("created_at");
-
-                        // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
-
-                        // Launch login activity
-                        Intent intent = new Intent(
-                                RegisterActivity.this,
-                                LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-
-                        // Error occurred in registration. Get the error
-                        // message
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "register");
-                params.put("name", name);
-                params.put("email", email);
-                params.put("password", password);
-
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
 
     private void showDialog() {
         if (!pDialog.isShowing())
@@ -193,4 +129,106 @@ public class RegisterActivity extends Activity {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
+
+
+    public class RegisterUser extends AsyncTask<String, String, String> {
+
+        boolean error;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog();
+
+        }
+
+
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            com.ilicit.ewerdima.helper.ServiceHandler jsonParser = new com.ilicit.ewerdima.helper.ServiceHandler(RegisterActivity.this);
+            String message = "";
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+            nameValuePairs.add(new BasicNameValuePair(
+                    "email", params[0]));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "password", params[1]));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "name", params[2]));
+
+            String json = jsonParser.makeServiceCall(AppConfig.URL_REGISTER, com.ilicit.ewerdima.helper.ServiceHandler.POST,nameValuePairs);
+
+            Log.e("Response sending: ", "> " + json);
+
+            if (json != null && json.length() >0) {
+                try {
+                    JSONObject jObj = new JSONObject(json);
+                    boolean status = true;
+
+                    if(jObj.has("uid")) {
+
+
+
+                        session.setLogin(true);
+
+
+                        String uid = jObj.getString("unique_id");
+
+
+                        String name = jObj.getString("name");
+                        String email = jObj.getString("email");
+                        String created_at = jObj.getString("created_at");
+
+                        // Inserting row in users table
+
+
+                            db.addUser(name, email, uid, created_at);
+
+
+
+                        // Launch main activity
+                        Intent intent = new Intent(RegisterActivity.this,
+                                LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // Error in login. Get the error message
+                        message = jObj.getString("Error");
+
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                }
+
+            } else {
+                Log.e("JSON Data error", "Didn't receive any data from server!");
+                message="";
+            }
+
+            return message;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            hideDialog();
+
+            if(result.equalsIgnoreCase("")){
+
+            }else {
+
+                Toast.makeText(getApplicationContext(),
+                        result, Toast.LENGTH_LONG).show();
+            }
+
+
+
+
+        }
+    }
+
+
 }
