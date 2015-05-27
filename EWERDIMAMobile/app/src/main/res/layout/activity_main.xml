@@ -32,6 +32,7 @@
                 android:textColor="@color/lbl_name"
                 android:textSize="24dp" />
 
+
             <RelativeLayout
                 android:id="@+id/RelativeLayout_Status"
                 android:layout_width="320dp"
@@ -41,19 +42,40 @@
                 android:layout_centerHorizontal="true"
                 >
 
+                <com.andexert.library.RippleView
+                    android:id="@+id/more"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_vertical|center_horizontal"
+                    rv_rippleDuration="800dp"
+                    rv_alpha="200"
+                    rv_ripplePadding="20dp"
+                    rv_zoom="true"
+                    rv_type ="doubleRipple"
+                    rv_zoomDuration ="200dp"
+
+                    rv_zoomScale ="2dp"
+                    rv_color ="@color/black">
+
                 <Button
                     android:background="@drawable/round_button"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:text="@string/reportem"
                     android:id="@+id/Reportbutton"
-                    android:shadowColor="@color/white"
-                    android:gravity="center_vertical|center_horizontal"
+
+
                     android:textColor="@color/white"
                     android:textSize="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    />
+
+                </com.andexert.library.RippleView>
             </RelativeLayout>
+
+
 
             <TextView
                 android:id="@+id/email"

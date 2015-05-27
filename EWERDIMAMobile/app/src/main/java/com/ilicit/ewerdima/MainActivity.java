@@ -295,14 +295,14 @@ public class MainActivity extends Activity {
                 try {
                     JSONObject jsonObj = new JSONObject(json);
                     if (jsonObj.length() != 0) {
-                        if (jsonObj.getInt("success") > 0) {
+                        if (jsonObj.getBoolean("success")) {
                             Log.e("error", "" + jsonObj.toString());
-                            message = "Sucess";
+                            message = "Success";
 
 
                         } else {
                             message = "Failure";
-                            int err = jsonObj.getInt("failure");
+                            boolean err = jsonObj.getBoolean("success");
 
                         }
 
