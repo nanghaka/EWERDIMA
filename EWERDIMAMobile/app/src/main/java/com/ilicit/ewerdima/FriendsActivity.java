@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ilicit.ewerdima.Models.MyUsers;
+
+import com.ilicit.ewerdima.Models.Results;
+
 import com.ilicit.ewerdima.dialog.ProgressDialogButton;
 import com.ilicit.ewerdima.helper.SQLiteHandler;
 import com.ilicit.ewerdima.helper.ServiceHandler;
