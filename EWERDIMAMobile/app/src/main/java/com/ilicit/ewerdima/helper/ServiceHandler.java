@@ -127,6 +127,7 @@ public class ServiceHandler {
 				sb.append(line + "\n");
 			}
 			is.close();
+			httpClient.close();
 			response = sb.toString();
 		} catch (Exception e) {
 			Log.e("Buffer Error", "Error: " + e.toString());

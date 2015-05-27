@@ -26,5 +26,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.mcxiaoke.volley:library:1.0.15'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.github.traex.rippleeffect:library:1.3'
 
 }

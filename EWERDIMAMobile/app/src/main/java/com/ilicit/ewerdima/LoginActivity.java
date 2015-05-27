@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ilicit.ewerdima.Models.MyUsers;
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
+import com.ilicit.ewerdima.dialog.ProgressDialogButton;
 import com.ilicit.ewerdima.helper.*;
 import com.ilicit.ewerdima.helper.ServiceHandler;
 
@@ -49,6 +50,7 @@ public class LoginActivity extends Activity {
     private SessionManager session;
 
     private SQLiteHandler db;
+    String email,password;
 
 
     @Override
@@ -84,8 +86,8 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                String email = inputEmail.getText().toString();
-                String password = inputPassword.getText().toString();
+                email = inputEmail.getText().toString();
+                password = inputPassword.getText().toString();
 
                 // Check for empty data in the form
                 if (email.trim().length() > 0 && password.trim().length() > 0) {
@@ -174,6 +176,9 @@ public class LoginActivity extends Activity {
 
                         session.setLogin(true);
 
+                        Utils.save("email",email,LoginActivity.this);
+                        Utils.save("password", password, LoginActivity.this);
+
 
                         String uid = jObj.getString("unique_id");
 
@@ -182,10 +187,12 @@ public class LoginActivity extends Activity {
                         String email = jObj.getString("email");
                         String created_at = jObj.getString("created_at");
 
+
                         // Inserting row in users table
                         if(db.getRowCount() <= 0){
 
                             db.addUser(name, email, uid, created_at);
+
                         }
 
 
@@ -220,8 +227,19 @@ public class LoginActivity extends Activity {
 
             }else {
 
-                Toast.makeText(getApplicationContext(),
-                        result, Toast.LENGTH_LONG).show();
+                final ProgressDialogButton dialogButton = new ProgressDialogButton(LoginActivity.this, "Error", result);
+                dialogButton.setCancelable(false);
+
+                dialogButton.show();
+                dialogButton.setOkClickedAction("OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogButton.dismiss();
+
+
+                            }
+                        });
             }
 
 

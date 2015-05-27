@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
+import com.ilicit.ewerdima.dialog.ProgressDialogButton;
 import com.ilicit.ewerdima.helper.*;
 
 
@@ -220,8 +221,19 @@ public class RegisterActivity extends Activity {
 
             }else {
 
-                Toast.makeText(getApplicationContext(),
-                        result, Toast.LENGTH_LONG).show();
+                final ProgressDialogButton dialogButton = new ProgressDialogButton(RegisterActivity.this, "Error", result);
+                dialogButton.setCancelable(false);
+
+                dialogButton.show();
+                dialogButton.setOkClickedAction("OK",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogButton.dismiss();
+
+
+                            }
+                        });
             }
 
 
