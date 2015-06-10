@@ -117,6 +117,7 @@ public class GCMIntentService extends IntentService {
         String title = "Ewerdima";
         String message = String.format("%s ", data.getString(TEXT));
         String id = "1";
+        String name = String.format("from %s ", data.getString("name"));
         if(data.containsKey("program_id")) {
              id = String.format("%s", data.getString("program_id")).trim();
 
@@ -131,13 +132,14 @@ public class GCMIntentService extends IntentService {
                         .setAutoCancel(true)
                         .setDefaults(-1)
                         .setPriority(Notification.PRIORITY_MAX)
-                        .setContentText(message);
+                        .setContentText(message+" "+name);
 
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtras(data);
         intent.putExtra(TITLE, message);
         intent.putExtra("gcm", id);
+        intent.putExtra("name", name);
 
 
         count++;
@@ -158,11 +160,12 @@ public class GCMIntentService extends IntentService {
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private PendingIntent getContentIntent(String message,int action) {
+    private PendingIntent getContentIntent(String message,int action,String name) {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(ACTION, action);
         intent.putExtra(TITLE, message);
+        intent.putExtra("name", name);
 
 
         count++;

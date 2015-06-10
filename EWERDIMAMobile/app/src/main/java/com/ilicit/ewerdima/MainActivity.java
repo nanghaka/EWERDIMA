@@ -84,7 +84,9 @@ public class MainActivity extends Activity {
             if (getIntent().getExtras().containsKey("gcm")) {
 
                 String mes = getIntent().getExtras().getString("title");
-                final ProgressDialogButton dialogButton = new ProgressDialogButton(MainActivity.this, "Ewerdima Alert", mes);
+                String name = getIntent().getExtras().getString("name");
+                String mesage = mes+" "+name;
+                final ProgressDialogButton dialogButton = new ProgressDialogButton(MainActivity.this, "Ewerdima Alert", mesage);
                 dialogButton.setCancelable(false);
 
                 dialogButton.show();
