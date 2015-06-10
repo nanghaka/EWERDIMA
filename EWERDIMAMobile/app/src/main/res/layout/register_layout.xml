@@ -76,6 +76,13 @@
             android:text="@string/btn_register"
             android:textColor="@color/white" />
 
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dip"
+            android:layout_height="wrap_content" />
+
         <!-- Link to Login Screen -->
 
         <Button

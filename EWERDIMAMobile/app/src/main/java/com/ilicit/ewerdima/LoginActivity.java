@@ -2,7 +2,9 @@ package com.ilicit.ewerdima;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +18,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.People;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.plus.model.people.PersonBuffer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ilicit.ewerdima.Models.MyUsers;
+import com.ilicit.ewerdima.Models.RegisterUser;
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
 import com.ilicit.ewerdima.dialog.ProgressDialogButton;
@@ -39,7 +50,7 @@ import java.util.Map;
 /**
  * Created by Dev on 4/27/2015.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,View.OnClickListener,ResultCallback<People.LoadPeopleResult> {
     // LogCat tag
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnLogin;
@@ -50,7 +61,17 @@ public class LoginActivity extends Activity {
     private SessionManager session;
 
     private SQLiteHandler db;
-    String email,password;
+    String email,password,name;
+
+    /* Request code used to invoke sign in user interactions. */
+    private static final int RC_SIGN_IN = 0;
+
+    /* Client used to interact with Google APIs. */
+    private GoogleApiClient mGoogleApiClient;
+
+    private boolean mIntentInProgress;
+
+    private boolean mSignInClicked;
 
 
     @Override
@@ -121,6 +142,17 @@ public class LoginActivity extends Activity {
             }
         });
 
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
+
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+
     }
 
 
@@ -134,6 +166,102 @@ public class LoginActivity extends Activity {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+        mSignInClicked = false;
+        Toast.makeText(this, "Please wait..", Toast.LENGTH_LONG).show();
+
+        email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+        if(Utils.isNetworkAvailable(LoginActivity.this)) {
+            if(Utils.getSaved("Token",this).equalsIgnoreCase("")){
+
+
+
+                Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
+
+
+                if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                    Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                    name = currentPerson.getDisplayName();
+                    Log.e("name sent ",">> "+name);
+                    if(Utils.isNetworkAvailable(LoginActivity.this)) {
+
+                        new  CheckLogin().execute(email,"google+user");
+
+                      //  new RegisterUser(LoginActivity.this).execute(email, "", name);
+                    }else {
+                        Toast.makeText(getApplicationContext(),
+                                "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                                .show();
+                    }
+
+                }
+
+
+            }else{
+                new CheckLogin().execute(email, "");
+            }
+
+
+        }else{
+            Toast.makeText(getApplicationContext(),
+                    "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+        mGoogleApiClient.connect();
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        if (!mIntentInProgress) {
+            if (mSignInClicked && connectionResult.hasResolution()) {
+                // The user has already clicked 'sign-in' so we attempt to resolve all
+                // errors until the user is signed in, or they cancel.
+                try {
+                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                    mIntentInProgress = true;
+                } catch (IntentSender.SendIntentException e) {
+                    // The intent was canceled before it was sent.  Return to the default
+                    // state and attempt to connect to get an updated ConnectionResult.
+                    mIntentInProgress = false;
+                    mGoogleApiClient.connect();
+                }
+            }
+        }
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.sign_in_button && !mGoogleApiClient.isConnecting()) {
+            mSignInClicked = true;
+            mGoogleApiClient.connect();
+        }
+
+
+
+    }
+
+    @Override
+    public void onResult(People.LoadPeopleResult peopleData) {
+
+
+
+    }
+
+
 
 
     public class CheckLogin extends AsyncTask<String, String, String> {
@@ -245,6 +373,32 @@ public class LoginActivity extends Activity {
 
 
 
+        }
+    }
+
+
+
+
+    protected void onStop() {
+        super.onStop();
+
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+
+    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
+        if (requestCode == RC_SIGN_IN) {
+            if (responseCode != RESULT_OK) {
+                mSignInClicked = false;
+            }
+
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.reconnect();
+            }
         }
     }
 

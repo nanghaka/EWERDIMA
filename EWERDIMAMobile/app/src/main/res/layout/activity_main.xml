@@ -37,25 +37,23 @@
                 android:id="@+id/RelativeLayout_Status"
                 android:layout_width="320dp"
                 android:layout_height="320dp"
-                android:background="@drawable/circle_status"
+
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 >
 
                 <com.andexert.library.RippleView
                     android:id="@+id/more"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="5dp"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_vertical|center_horizontal"
-                    rv_rippleDuration="800dp"
+                    android:gravity="center_vertical"
+                    rv_rippleDuration="800"
                     rv_alpha="200"
                     rv_ripplePadding="20dp"
                     rv_zoom="true"
                     rv_type ="doubleRipple"
-                    rv_zoomDuration ="200dp"
+                    rv_zoomDuration ="200"
 
                     rv_zoomScale ="2dp"
                     rv_color ="@color/black">
@@ -67,12 +65,27 @@
                     android:text="@string/reportem"
                     android:id="@+id/Reportbutton"
 
-
                     android:textColor="@color/white"
                     android:textSize="15dp"
                     />
 
+
                 </com.andexert.library.RippleView>
+
+                <Button
+                    android:background="@drawable/round_button"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:text="Quick Report"
+                    android:id="@+id/Quickbutton"
+
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+
             </RelativeLayout>
 
 

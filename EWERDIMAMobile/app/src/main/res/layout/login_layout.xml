@@ -16,10 +16,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ewerdima"/>
-    <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/spacer"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -72,18 +73,27 @@
             android:text="@string/btn_login"
             android:textColor="@color/btn_login" />
 
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dip"
+
+            android:layout_height="wrap_content" />
+
         <!-- Link to Login Screen -->
 
         <Button
             android:id="@+id/btnLinkToRegisterScreen"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
+            android:layout_marginTop="10dip"
             android:background="@null"
             android:text="@string/btn_link_to_register"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15dp" />
     </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -84,6 +84,7 @@ public class ServiceHandler {
 			
 			// Checking http request method type
 			if (method == POST) {
+
 				HttpPost httpPost = new HttpPost(url);
 				// adding post params
 				if (params != null) {
@@ -129,6 +130,7 @@ public class ServiceHandler {
 			is.close();
 			httpClient.close();
 			response = sb.toString();
+			Log.e("response in file",""+response);
 		} catch (Exception e) {
 			Log.e("Buffer Error", "Error: " + e.toString());
 		}

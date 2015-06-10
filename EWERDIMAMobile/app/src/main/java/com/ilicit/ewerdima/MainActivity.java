@@ -1,6 +1,7 @@
 package com.ilicit.ewerdima;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.plus.Plus;
 import com.ilicit.ewerdima.dialog.ProgressDialogButton;
 import com.ilicit.ewerdima.helper.GPSService;
 import com.ilicit.ewerdima.helper.SQLiteHandler;
@@ -42,20 +45,24 @@ public class MainActivity extends Activity {
     GoogleCloudMessaging gcm;
     String regid;
     SharedPreferences prefs;
+    private String SEND_URL ="http://ewerdima.cloudapp.net/index.php/api/rest/createNewReport";
 
     private String REG_URL = "http://ewerdima.cloudapp.net/index.php/api/rest/register";
     double latitude;
     double longitude;
+    private GoogleApiClient mGoogleApiClient;
 
-    private Button ReportCrime;
+    private Button ReportCrime,Quickbutton;
 
     private TextView txtName;
   //  private TextView txtEmail;
     private Button btnLogout, addFriends;
+    ProgressDialog pDialog;
 
     private SQLiteHandler db;
     private SessionManager session;
     String uid;
+    String address = "";
 
 
     @Override
@@ -67,6 +74,7 @@ public class MainActivity extends Activity {
      //   txtEmail = (TextView) findViewById(R.id.email);
         btnLogout = (Button) findViewById(R.id.btnLogout);
         ReportCrime = (Button) findViewById(R.id.Reportbutton);
+        Quickbutton =(Button) findViewById(R.id.Quickbutton);
         addFriends = (Button) findViewById(R.id.btnfriends);
 
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -120,7 +128,7 @@ public class MainActivity extends Activity {
             longitude = mGPSService.getLongitude();
             // Toast.makeText(getApplicationContext(), "Latitude:" + latitude + " | Longitude: " + longitude, Toast.LENGTH_LONG).show();
 
-            // address = mGPSService.getLocationAddress();
+             address = mGPSService.getLocationAddress();
         }
 
 
@@ -134,8 +142,21 @@ public class MainActivity extends Activity {
         // session manager
         session = new SessionManager(getApplicationContext());
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+
+
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
+
         if (!session.isLoggedIn()) {
             logoutUser();
+
+            if (mGoogleApiClient.isConnected()) {
+                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                mGoogleApiClient.disconnect();
+                mGoogleApiClient.connect();
+            }
         }
 
         // Fetching user details from sqlite
@@ -159,6 +180,14 @@ public class MainActivity extends Activity {
                 reportIntent.putExtra("uid", user.get("uid"));
 
                 startActivity(reportIntent);
+            }
+        });
+
+
+        Quickbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new QuickSendDetails().execute();
             }
         });
 
@@ -338,6 +367,110 @@ public class MainActivity extends Activity {
         startActivity(intent);
         finish();
     }
+
+
+    public class QuickSendDetails extends AsyncTask<String, String, String>{
+
+        boolean error;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Please wait Sending Report...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
+
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            ServiceHandler jsonParser = new ServiceHandler(MainActivity.this);
+            String message = "";
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+            nameValuePairs.add(new BasicNameValuePair(
+                    "reporttype", "Emergency"));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "reporterid", uid));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "locationstreet", address));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "locationlat", String.valueOf(latitude)));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "locationlong", String.valueOf(longitude)));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "descriptionoffender","quick alert"));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "descriptionreport", "please help me"));
+            nameValuePairs.add(new BasicNameValuePair(
+                    "contactnumber", "00000000"));
+
+
+
+            String json = jsonParser.makeServiceCall(SEND_URL, ServiceHandler.POST,nameValuePairs);
+
+            Log.e("Response sending: ", "> " + json);
+
+            if (json != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(json);
+                    if (jsonObj.length() != 0) {
+                        if(jsonObj.getInt("success")>0){
+
+                            message = "Created report and notified contacts.";
+                            //  error =jsonObj.getBoolean("error");
+
+                        }else{
+                            message = "Report Failed.Please try again later.";
+                            // error =jsonObj.getBoolean("error");
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    message="Server temporarly down. please try again later.";
+                    e.printStackTrace();
+                }
+
+            } else {
+                Log.e("JSON Data error", "Didn't receive any data from server!");
+                message="Server temporarly down. please try again later.";
+            }
+
+            return message;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+
+            final ProgressDialogButton dialogButton = new ProgressDialogButton(MainActivity.this, "Report", result);
+
+            dialogButton.show();
+            dialogButton.setOkClickedAction("OK",
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogButton.dismiss();
+
+
+                        }
+                    });
+
+
+
+        }
+    }
+
+
+
 
 }
 

@@ -3,6 +3,7 @@ package com.ilicit.ewerdima;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.People;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.plus.model.people.PersonBuffer;
+import com.ilicit.ewerdima.Models.RegisterUser;
 import com.ilicit.ewerdima.app.AppConfig;
 import com.ilicit.ewerdima.app.AppController;
 import com.ilicit.ewerdima.dialog.ProgressDialogButton;
@@ -35,7 +45,7 @@ import java.util.Map;
 /**
  * Created by Dev on 4/27/2015.
  */
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,View.OnClickListener,ResultCallback<People.LoadPeopleResult>  {
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnRegister;
     private Button btnLinkToLogin;
@@ -45,6 +55,19 @@ public class RegisterActivity extends Activity {
     private ProgressDialog pDialog;
     private SessionManager session;
     private SQLiteHandler db;
+
+
+    private static final int RC_SIGN_IN = 0;
+
+    /* Client used to interact with Google APIs. */
+    private GoogleApiClient mGoogleApiClient;
+
+    private boolean mIntentInProgress;
+
+    private boolean mSignInClicked;
+
+    String email,name;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +110,7 @@ public class RegisterActivity extends Activity {
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     if(Utils.isNetworkAvailable(RegisterActivity.this)) {
 
-                        new RegisterUser().execute(email,password,name);
+                        new RegisterUser(RegisterActivity.this).execute(email, password, name);
                     }else {
                         Toast.makeText(getApplicationContext(),
                                 "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
@@ -113,6 +136,17 @@ public class RegisterActivity extends Activity {
             }
         });
 
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
+
+
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
     }
 
     /**
@@ -132,113 +166,106 @@ public class RegisterActivity extends Activity {
     }
 
 
-    public class RegisterUser extends AsyncTask<String, String, String> {
-
-        boolean error;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showDialog();
-
-        }
 
 
 
+    @Override
+    public void onConnected(Bundle bundle) {
 
-        @Override
-        protected String doInBackground(String... params) {
-            com.ilicit.ewerdima.helper.ServiceHandler jsonParser = new com.ilicit.ewerdima.helper.ServiceHandler(RegisterActivity.this);
-            String message = "";
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        mSignInClicked = false;
+        Toast.makeText(this, "Registering User...", Toast.LENGTH_LONG).show();
+        Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
+                .setResultCallback(this);
+        email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-            nameValuePairs.add(new BasicNameValuePair(
-                    "email", params[0]));
-            nameValuePairs.add(new BasicNameValuePair(
-                    "password", params[1]));
-            nameValuePairs.add(new BasicNameValuePair(
-                    "name", params[2]));
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            name = currentPerson.getDisplayName();
+            if(Utils.isNetworkAvailable(RegisterActivity.this)) {
 
-            String json = jsonParser.makeServiceCall(AppConfig.URL_REGISTER, com.ilicit.ewerdima.helper.ServiceHandler.POST,nameValuePairs);
-
-            Log.e("Response sending: ", "> " + json);
-
-            if (json != null && json.length() >0) {
-                try {
-                    JSONObject jObj = new JSONObject(json);
-                    boolean status = true;
-
-                    if(jObj.has("uid")) {
-
-
-
-                        session.setLogin(true);
-
-
-                        String uid = jObj.getString("unique_id");
-
-
-                        String name = jObj.getString("name");
-                        String email = jObj.getString("email");
-                        String created_at = jObj.getString("created_at");
-
-                        // Inserting row in users table
-
-
-                            db.addUser(name, email, uid, created_at);
-
-
-
-                        // Launch main activity
-                        Intent intent = new Intent(RegisterActivity.this,
-                                LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        // Error in login. Get the error message
-                        message = jObj.getString("Error");
-
-                    }
-                } catch (JSONException e) {
-                    // JSON error
-                    e.printStackTrace();
-                }
-
-            } else {
-                Log.e("JSON Data error", "Didn't receive any data from server!");
-                message="";
-            }
-
-            return message;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            hideDialog();
-
-            if(result.equalsIgnoreCase("")){
-
+                new RegisterUser(RegisterActivity.this).execute(email, "google+user", name);
             }else {
-
-                final ProgressDialogButton dialogButton = new ProgressDialogButton(RegisterActivity.this, "Error", result);
-                dialogButton.setCancelable(false);
-
-                dialogButton.show();
-                dialogButton.setOkClickedAction("OK",
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogButton.dismiss();
-
-
-                            }
-                        });
+                Toast.makeText(getApplicationContext(),
+                        "Please check on your internet connection.Thank you!", Toast.LENGTH_LONG)
+                        .show();
             }
 
+        }
+
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+        mGoogleApiClient.connect();
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        if (!mIntentInProgress) {
+            if (mSignInClicked && connectionResult.hasResolution()) {
+                // The user has already clicked 'sign-in' so we attempt to resolve all
+                // errors until the user is signed in, or they cancel.
+                try {
+                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                    mIntentInProgress = true;
+                } catch (IntentSender.SendIntentException e) {
+                    // The intent was canceled before it was sent.  Return to the default
+                    // state and attempt to connect to get an updated ConnectionResult.
+                    mIntentInProgress = false;
+                    mGoogleApiClient.connect();
+                }
+            }
+        }
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.sign_in_button && !mGoogleApiClient.isConnecting()) {
+            mSignInClicked = true;
+            mGoogleApiClient.connect();
+        }
 
 
 
+    }
+
+    @Override
+    public void onResult(People.LoadPeopleResult peopleData) {
+
+
+
+    }
+
+
+
+
+    protected void onStop() {
+        super.onStop();
+
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+
+    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
+        if (requestCode == RC_SIGN_IN) {
+            if (responseCode != RESULT_OK) {
+                mSignInClicked = false;
+            }
+
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.reconnect();
+            }
         }
     }
 

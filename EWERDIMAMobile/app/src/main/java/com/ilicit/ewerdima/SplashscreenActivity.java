@@ -9,11 +9,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.ilicit.ewerdima.helper.SQLiteHandler;
+
 /**
  * Created by Dev on 4/2/2015.
  */
 public class SplashscreenActivity extends Activity {
-
+    private SQLiteHandler db;
 
 
 
@@ -23,8 +25,11 @@ public class SplashscreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+
+        db = new SQLiteHandler(getApplicationContext());
+
         CountDown _tik;
-        if(Utils.getSaved("Token",this).equalsIgnoreCase("")) {
+        if(db.getRowCount() <= 0) {
             _tik = new CountDown(2000, 2000, this, LoginActivity.class); // It delay the screen for 1 second and after that switch to YourNextActivity
             _tik.start();
 
