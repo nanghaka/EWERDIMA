@@ -58,17 +58,6 @@
                     rv_zoomScale ="2dp"
                     rv_color ="@color/black">
 
-                <Button
-                    android:background="@drawable/round_button"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:text="@string/reportem"
-                    android:id="@+id/Reportbutton"
-
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    />
-
 
                 </com.andexert.library.RippleView>
 
@@ -78,12 +67,22 @@
                     android:layout_height="100dp"
                     android:text="Quick Report"
                     android:id="@+id/Quickbutton"
-
                     android:textColor="@color/white"
                     android:textSize="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignTop="@+id/more"
+                    android:layout_centerHorizontal="true" />
+
+                <Button
+                    android:background="@drawable/round_button2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:text="@string/reportem"
+                    android:id="@+id/Reportbutton"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:layout_alignBottom="@+id/more"
+                    android:layout_alignLeft="@+id/Quickbutton"
+                    android:layout_alignStart="@+id/Quickbutton" />
 
 
             </RelativeLayout>
