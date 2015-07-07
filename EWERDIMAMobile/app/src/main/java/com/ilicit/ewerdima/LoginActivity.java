@@ -2,7 +2,6 @@ package com.ilicit.ewerdima;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
@@ -13,29 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.google.android.gms.plus.model.people.PersonBuffer;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.ilicit.ewerdima.Models.MyUsers;
-import com.ilicit.ewerdima.Models.RegisterUser;
 import com.ilicit.ewerdima.app.AppConfig;
-import com.ilicit.ewerdima.app.AppController;
 import com.ilicit.ewerdima.dialog.ProgressDialogButton;
-import com.ilicit.ewerdima.helper.*;
+import com.ilicit.ewerdima.helper.SQLiteHandler;
 import com.ilicit.ewerdima.helper.ServiceHandler;
-
+import com.ilicit.ewerdima.helper.SessionManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -43,9 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Dev on 4/27/2015.
@@ -315,9 +300,9 @@ public class LoginActivity extends Activity implements GoogleApiClient.Connectio
                         String email = jObj.getString("email");
                         String created_at = jObj.getString("created_at");
 
-
                         // Inserting row in users table
                         if(db.getRowCount() <= 0){
+                            Log.e("added","dcsdf");
 
                             db.addUser(name, email, uid, created_at);
 

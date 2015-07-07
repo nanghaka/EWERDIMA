@@ -151,7 +151,6 @@ public class GCMIntentService extends IntentService {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(count, PendingIntent.FLAG_CANCEL_CURRENT);
 
 
-
         mBuilder.setContentIntent(resultPendingIntent);
         return mBuilder;
     }

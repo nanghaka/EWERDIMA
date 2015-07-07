@@ -37,7 +37,7 @@ import java.util.List;
 
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
     public static final String GCM_SENDER_ID = "1074367254642";
 
     public static final String PREFS_NAME = "Ewerdima_GCM";
@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
     private Button ReportCrime,Quickbutton;
 
     private TextView txtName;
+     HashMap<String, String> user;
   //  private TextView txtEmail;
     private Button btnLogout, addFriends;
     ProgressDialog pDialog;
@@ -76,16 +77,42 @@ public class MainActivity extends Activity {
         ReportCrime = (Button) findViewById(R.id.Reportbutton);
         Quickbutton =(Button) findViewById(R.id.Quickbutton);
         addFriends = (Button) findViewById(R.id.btnfriends);
+        addFriends.setOnClickListener(this);
+        ReportCrime.setOnClickListener(this);
+        Quickbutton.setOnClickListener(this);
+        btnLogout.setOnClickListener(this);
 
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         gcm = GoogleCloudMessaging.getInstance(this);
+        db = new SQLiteHandler(getApplicationContext());
+
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+
+
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
+
+
+        user = db.getUserDetails();
+
+        String name = user.get("name");
+        //  String email = user.get("email");
+        uid = user.get("uid");
+
+
+        // Displaying the user details on the screen
+        txtName.setText(name);
 
         if(getIntent().getExtras() != null) {
             if (getIntent().getExtras().containsKey("gcm")) {
 
                 String mes = getIntent().getExtras().getString("title");
-                String name = getIntent().getExtras().getString("name");
-                String mesage = mes+" "+name;
+                String names = getIntent().getExtras().getString("name");
+                String mesage = mes+" "+names;
                 final ProgressDialogButton dialogButton = new ProgressDialogButton(MainActivity.this, "Ewerdima Alert", mesage);
                 dialogButton.setCancelable(false);
 
@@ -105,13 +132,20 @@ public class MainActivity extends Activity {
         }
 
 
+        if (getRegistrationId().equalsIgnoreCase("")) {
+            registerInBackground();
+        } else {
+            if (isOnline()) {
+
+                sendInBackground(getRegistrationId());
+            }
+        }
+
+
 
 
         GPSService mGPSService = new GPSService(MainActivity.this);
         mGPSService.getLocation();
-
-
-
 
 
 
@@ -139,17 +173,7 @@ public class MainActivity extends Activity {
 
 
         // SqLite database handler
-        db = new SQLiteHandler(getApplicationContext());
 
-        // session manager
-        session = new SessionManager(getApplicationContext());
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-
-
-                .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .build();
 
         if (!session.isLoggedIn()) {
             logoutUser();
@@ -162,66 +186,51 @@ public class MainActivity extends Activity {
         }
 
         // Fetching user details from sqlite
-        final HashMap<String, String> user = db.getUserDetails();
 
-        String name = user.get("name");
-      //  String email = user.get("email");
-        uid = user.get("uid");
-
-
-        // Displaying the user details on the screen
-        txtName.setText(name);
         //txtEmail.setText(email);
 
-        //Report Crime Button
-        ReportCrime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+
+
+
+
+        // Logout button click event
+
+
+
+
+
+
+
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.btnfriends:
+
+                Intent intent = new Intent(MainActivity.this, FriendsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.Reportbutton:
                 Intent reportIntent = new Intent(MainActivity.this, ReportFormActivity.class);
 
                 reportIntent.putExtra("uid", user.get("uid"));
 
                 startActivity(reportIntent);
-            }
-        });
-
-
-        Quickbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new QuickSendDetails().execute();
-            }
-        });
-
-        // Logout button click event
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.btnLogout:
                 logoutUser();
-            }
-        });
+                break;
 
+            case R.id.Quickbutton:
+                new QuickSendDetails().execute();
+                break;
 
-        if (getRegistrationId().equalsIgnoreCase("")) {
-            registerInBackground();
-        } else {
-            if (isOnline()) {
-
-                sendInBackground(getRegistrationId());
-            }
         }
-
-
-        addFriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this, FriendsActivity.class);
-                startActivity(intent);
-
-            }
-        });
 
     }
 
@@ -288,6 +297,8 @@ public class MainActivity extends Activity {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+
 
 
     public class SendDetails extends AsyncTask<String, String, String> {

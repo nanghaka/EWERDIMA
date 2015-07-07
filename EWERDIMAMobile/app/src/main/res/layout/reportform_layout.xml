@@ -50,7 +50,9 @@
 
     <Spinner android:id="@+id/spinCrimes"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
+
+        android:background="@drawable/custom_rounded_corner"
         android:textSize="20dp"
         android:textColor="@color/lbl_name"
         />
